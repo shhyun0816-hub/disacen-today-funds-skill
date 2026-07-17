@@ -4,7 +4,7 @@ services:
   - type: web
     name: disacen-today-funds-skill
     runtime: docker
-    plan: starter          # 카카오 5초 타임아웃 대비 always-on 권장(무료 플랜은 유휴 시 잠들어 첫 응답이 느림)
+    plan: free             # 테스트용(무료). 유휴 시 잠들어 첫 응답이 느림 → 실서비스 전에 대시보드에서 starter 로 승격 권장
     region: singapore      # 한국에서 가까운 리전
     healthCheckPath: /healthz
     autoDeploy: true

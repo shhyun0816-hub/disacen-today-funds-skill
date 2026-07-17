@@ -75,8 +75,17 @@ app.listen(PORT, () => {
   if (BASE_URL.startsWith('http://localhost')) {
     console.warn('⚠  BASE_URL 이 localhost 입니다. 카카오 연동 전에 공개 https 도메인으로 설정하세요.');
   }
-  // 부팅 시 4개 API 캐시를 미리 데워 첫 스킬 호출(카카오 5초 제한)을 빠르게 함
-  Promise.allSettled(CATEGORIES.map((cfg) => getRanking(cfg.cat)))
-    .then(() => console.log('데이터 캐시 예열 완료'))
-    .catch(() => {});
+  // 부팅 시 데이터 + 섬네일을 미리 준비(무료플랜 콜드스타트 시 카카오가 4장을
+  // 동시에 요청해도 즉시 캐시 히트되도록). 섬네일은 메모리 절약 위해 순차 렌더.
+  (async () => {
+    for (const cfg of CATEGORIES) {
+      try {
+        const data = await getRanking(cfg.cat);
+        await renderThumb(cfg, data);
+      } catch (err) {
+        console.warn(`[warm] ${cfg.cat} 예열 실패:`, err.message);
+      }
+    }
+    console.log('데이터 · 섬네일 예열 완료');
+  })();
 });

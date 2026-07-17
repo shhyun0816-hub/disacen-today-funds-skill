@@ -21,12 +21,14 @@ function getBrowser() {
 }
 
 // collected_date 기준으로 PNG 캐시 (데이터가 바뀌면 자동으로 새 키 → 재렌더)
-const cache = new Map(); // `${cat}:${collected_date}` -> Buffer
+const cache = new Map(); // key -> Buffer
+const inflight = new Map(); // key -> Promise<Buffer> (동시 중복 렌더 방지)
 
-async function renderThumb(cfg, data) {
-  const key = `${cfg.cat}:${data.collected_date || data.base_date}`;
-  if (cache.has(key)) return cache.get(key);
+function keyOf(cfg, data) {
+  return `${cfg.cat}:${data.collected_date || data.base_date}`;
+}
 
+async function doRender(cfg, data, key) {
   const started = Date.now();
   console.log(`[thumb] ${cfg.cat} 렌더링 시작...`);
   const browser = await getBrowser();
@@ -35,13 +37,12 @@ async function renderThumb(cfg, data) {
     await page.setViewport({ width: 800, height: 800, deviceScaleFactor: 1 });
     // 'load' 로 대기 (networkidle0 은 CDN keep-alive 로 멈출 수 있음)
     await page.setContent(thumbHTML(cfg, data), { waitUntil: 'load', timeout: 20000 });
-    // 웹폰트 로딩 대기 — 단, 최대 3초로 제한해 무한 대기 방지 (미로딩 시 대체서체로 렌더)
+    // 웹폰트 로딩 대기 — 최대 3초로 제한(미로딩 시 대체서체로 렌더)
     await Promise.race([
       page.evaluate(() => document.fonts.ready.then(() => true)),
       new Promise((r) => setTimeout(r, 3000)),
     ]);
-    // puppeteer 최신 버전은 Uint8Array 를 반환 → Buffer 로 변환해야
-    // Express res.send 가 이미지로 전송(아니면 JSON 직렬화되어 깨짐)
+    // puppeteer 최신 버전은 Uint8Array 반환 → Buffer 로 변환해야 이미지로 전송됨
     const shot = await page.screenshot({ type: 'png', clip: { x: 0, y: 0, width: 800, height: 800 } });
     const buf = Buffer.from(shot);
     cache.set(key, buf);
@@ -49,6 +50,20 @@ async function renderThumb(cfg, data) {
     return buf;
   } finally {
     await page.close();
+  }
+}
+
+async function renderThumb(cfg, data) {
+  const key = keyOf(cfg, data);
+  if (cache.has(key)) return cache.get(key);
+  if (inflight.has(key)) return inflight.get(key); // 같은 이미지 동시 요청은 하나의 렌더를 공유
+
+  const promise = doRender(cfg, data, key);
+  inflight.set(key, promise);
+  try {
+    return await promise;
+  } finally {
+    inflight.delete(key);
   }
 }
 

@@ -212,7 +212,7 @@ ${FONT_LINKS}
   .th-date{font-size:23px; opacity:.92;}
   .th-badge{position:absolute; top:44px; right:44px; background:rgba(255,255,255,.2);
     border:2px solid rgba(255,255,255,.55); border-radius:40px; font-size:26px; font-weight:800; padding:9px 24px;}
-  .th-list{flex:1; padding:26px 40px 8px; display:flex; flex-direction:column; gap:18px;}
+  .th-list{flex:1; padding:26px 40px 38px; display:flex; flex-direction:column; gap:18px;}
   .th-row{display:flex; align-items:center; gap:22px; flex:1; border:2px solid #eee9e3; border-radius:24px;
     padding:22px 28px; background:#fff; box-shadow:0 4px 16px -10px rgba(4,59,114,.2);}
   .th-rank{flex:0 0 74px; text-align:center;}
@@ -231,8 +231,6 @@ ${RISK_BADGE_CSS.replace(/\.g/g, '.th-risk.g')}
   .th-sub{font-size:22px; color:var(--sub); margin-top:8px;}
   .th-sub b{font-weight:700;}
   .up{color:var(--up);} .down{color:var(--down);}
-  .th-foot{padding:22px 44px; border-top:2px solid var(--line); display:flex; justify-content:flex-end; align-items:center;}
-  .th-foot .more{font-size:27px; font-weight:800; color:var(--orange);}
 </style>
 </head>
 <body>
@@ -244,7 +242,6 @@ ${RISK_BADGE_CSS.replace(/\.g/g, '.th-risk.g')}
       <div class="th-date">기준일 ${esc(data.base_date)}</div>
     </div>
     <div class="th-list">${rows}</div>
-    <div class="th-foot"><span class="more">전체보기 →</span></div>
   </div>
 </body>
 </html>`;

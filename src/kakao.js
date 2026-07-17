@@ -8,10 +8,9 @@ function buildCarousel(baseUrl, metaByCat) {
   const items = CATEGORIES.map((cfg) => {
     const d = metaByCat[cfg.cat];
     const ver = d ? d.collected_date || d.base_date : '';
-    const date = d ? d.base_date : '-';
     return {
       title: cfg.cardTitle,
-      description: `기준일 ${date} · ${cfg.unit} TOP3`,
+      description: '아래 버튼을 클릭하면 전체 펀드순위를 볼 수 있습니다.',
       // 800x800 정사각 섬네일. ?v=<collected_date> 로 데이터 갱신 시 카카오 이미지 캐시 무효화
       thumbnail: {
         imageUrl: `${baseUrl}/thumb/${cfg.cat}.png?v=${ver}`,

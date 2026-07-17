@@ -1,0 +1,20 @@
+{
+  "name": "disacen-today-funds-skill",
+  "version": "1.0.0",
+  "private": true,
+  "description": "카카오 챗봇 '디자센' - 오늘의 인기펀드 케러셀 스킬 (시나리오05)",
+  "main": "server.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "prerender": "node scripts/prerender-thumbs.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "puppeteer": "^23.11.1",
+    "dotenv": "^16.4.5"
+  }
+}

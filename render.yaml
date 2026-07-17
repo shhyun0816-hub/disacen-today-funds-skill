@@ -1,0 +1,16 @@
+# Render Blueprint — 이 저장소를 Render 에 연결하면 자동으로 이 설정을 읽어 배포합니다.
+# (수동 생성해도 되지만, Blueprint 를 쓰면 클릭 몇 번으로 끝납니다.)
+services:
+  - type: web
+    name: disacen-today-funds-skill
+    runtime: docker
+    plan: starter          # 카카오 5초 타임아웃 대비 always-on 권장(무료 플랜은 유휴 시 잠들어 첫 응답이 느림)
+    region: singapore      # 한국에서 가까운 리전
+    healthCheckPath: /healthz
+    autoDeploy: true
+    envVars:
+      - key: CACHE_TTL_MS
+        value: "1800000"   # 30분
+      # BASE_URL 은 설정하지 않아도 됩니다.
+      # server.js 가 Render 가 주는 RENDER_EXTERNAL_URL 을 자동으로 사용합니다.
+      # (커스텀 도메인을 붙이면 그때 BASE_URL 로 지정)

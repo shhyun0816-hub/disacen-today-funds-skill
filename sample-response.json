@@ -1,0 +1,58 @@
+{
+  "version": "2.0",
+  "template": {
+    "outputs": [
+      {
+        "carousel": {
+          "type": "basicCard",
+          "items": [
+            {
+              "title": "수익률 상위 펀드",
+              "description": "기준일 2026.07.15 · 수익률순 TOP3",
+              "thumbnail": {
+                "imageUrl": "{{BASE_URL}}/thumb/top_return.png?v=20260715",
+                "fixedRatio": true
+              },
+              "buttons": [
+                { "action": "webLink", "label": "전체보기", "webLinkUrl": "{{BASE_URL}}/page/top_return" }
+              ]
+            },
+            {
+              "title": "글로벌 MVP 포트폴리오 랭킹",
+              "description": "기준일 2026.07.15 · 수익률순 TOP3",
+              "thumbnail": {
+                "imageUrl": "{{BASE_URL}}/thumb/mvp.png?v=20260715",
+                "fixedRatio": true
+              },
+              "buttons": [
+                { "action": "webLink", "label": "전체보기", "webLinkUrl": "{{BASE_URL}}/page/mvp" }
+              ]
+            },
+            {
+              "title": "매수 상위 펀드",
+              "description": "기준일 2026.07.15 · 판매순 TOP3",
+              "thumbnail": {
+                "imageUrl": "{{BASE_URL}}/thumb/top_purchase.png?v=20260715",
+                "fixedRatio": true
+              },
+              "buttons": [
+                { "action": "webLink", "label": "전체보기", "webLinkUrl": "{{BASE_URL}}/page/top_purchase" }
+              ]
+            },
+            {
+              "title": "베스트 관심 펀드",
+              "description": "기준일 2026.07.15 · 관심순 TOP3",
+              "thumbnail": {
+                "imageUrl": "{{BASE_URL}}/thumb/best_interest.png?v=20260715",
+                "fixedRatio": true
+              },
+              "buttons": [
+                { "action": "webLink", "label": "전체보기", "webLinkUrl": "{{BASE_URL}}/page/best_interest" }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

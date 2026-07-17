@@ -1,0 +1,4 @@
+node_modules/
+.env
+public/thumb/*.png
+npm-debug.log*

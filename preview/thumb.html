@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>섬네일 프리뷰</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/spoqa/spoqa-han-sans@latest/css/SpoqaHanSans-kr.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/spoqa/spoqa-han-sans@latest/css/SpoqaHanSansNeo.css">
+<style>
+  :root{
+    --orange:#F58220; --blue:#043B72; --ink:#48535B; --sub:#84888B; --line:#E5E4E1;
+    --up:#F58220; --down:#0d5bb5;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{background:#fff;}
+  /* 카카오 섬네일 규격: 800 x 800 */
+  .thumb{
+    width:800px; height:800px; background:#fff; overflow:hidden;
+    font-family:'Spoqa Han Sans','Spoqa Han Sans Neo','Malgun Gothic',sans-serif;
+    color:var(--ink); display:flex; flex-direction:column;
+  }
+  /* 헤더 */
+  .th-head{
+    background:linear-gradient(135deg,#F58220 0%,#e8720f 100%);
+    color:#fff; padding:40px 44px 34px; position:relative;
+  }
+  .th-brand{font-size:24px; font-weight:700; letter-spacing:.01em; opacity:.95;}
+  .th-title{font-size:52px; font-weight:700; margin:10px 0 8px; letter-spacing:-.02em; line-height:1.1;}
+  .th-date{font-size:23px; opacity:.92;}
+  .th-badge{
+    position:absolute; top:44px; right:44px; background:rgba(255,255,255,.2);
+    border:2px solid rgba(255,255,255,.55); border-radius:40px;
+    font-size:26px; font-weight:800; padding:9px 24px; letter-spacing:.02em;
+  }
+  /* 리스트 */
+  .th-list{flex:1; padding:26px 40px 8px; display:flex; flex-direction:column; gap:18px;}
+  .th-row{
+    display:flex; align-items:center; gap:22px; flex:1;
+    border:2px solid #eee9e3; border-radius:24px; padding:22px 28px;
+    background:#fff; box-shadow:0 4px 16px -10px rgba(4,59,114,.2);
+  }
+  .th-rank{flex:0 0 74px; text-align:center;}
+  .th-rank b{font-size:66px; font-weight:800; line-height:.9; color:var(--blue);}
+  .th-row.top1 .th-rank b{color:var(--orange);}
+  .th-info{flex:1; min-width:0;}
+  .th-nm{
+    font-size:37px; font-weight:700; color:#333a3f; line-height:1.15; margin-bottom:12px;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .th-tags{display:flex; flex-wrap:wrap; gap:8px; align-items:center;}
+  .th-tag{font-size:20px; font-weight:600; color:var(--sub); background:#f1f2f4; padding:5px 13px; border-radius:10px;}
+  .th-risk{font-size:20px; font-weight:700; padding:5px 13px; border-radius:10px; display:inline-flex; align-items:center; gap:8px;}
+  .th-risk::before{content:""; width:11px; height:11px; border-radius:50%; background:currentColor;}
+  .g1{color:#a3320b; background:#fbe4da;} .g2{color:#CB6015; background:#fdece0;}
+  .g3{color:#F58220; background:#fef2e6;} .g4{color:#0086B8; background:#e6f3f8;}
+  .g5{color:#043B72; background:#e6ecf2;} .g6{color:#48535B; background:#eef0f1;}
+  .th-ret{flex:0 0 200px; text-align:right;}
+  .th-big{font-size:44px; font-weight:800; line-height:1; letter-spacing:-.01em;}
+  .th-sub{font-size:22px; color:var(--sub); margin-top:8px;}
+  .th-sub b{font-weight:700;}
+  .up{color:var(--up);} .down{color:var(--down);}
+  /* 푸터 */
+  .th-foot{
+    padding:22px 44px; border-top:2px solid var(--line);
+    display:flex; justify-content:flex-end; align-items:center;
+  }
+  .th-foot .more{font-size:27px; font-weight:800; color:var(--orange);}
+</style>
+</head>
+<body>
+  <div class="thumb" id="thumb"></div>
+<script>
+var DATA = {
+  top_return: { title:'수익률 상위 펀드', brand:'미래에셋생명 · 변액보험 펀드', date:'2026.07.15', unit:'수익률순', top:[
+    {rank:1, nm:'글로벌신성장액티브', asset:'해외주식', desc:'글로벌', grade:2, m3:27.25, m6:32.27},
+    {rank:2, nm:'주식형', asset:'국내주식', desc:'일반', grade:3, m3:27.19, m6:67.17},
+    {rank:3, nm:'인덱스성장형', asset:'국내주식', desc:'인덱스', grade:3, m3:23.16, m6:54.71}
+  ]},
+  mvp: { title:'글로벌 MVP 포트폴리오', brand:'미래에셋생명 · MVP 포트폴리오', date:'2026.07.15', unit:'수익률순', top:[
+    {rank:1, nm:'글로벌MVP주식형', asset:'해외주식', desc:'포트폴리오', grade:3, m3:8.64, m6:13.75},
+    {rank:2, nm:'ETF AI MVP(적극)', asset:'해외주식', desc:'포트폴리오', grade:3, m3:5.82, m6:6.29},
+    {rank:3, nm:'글로벌 MVP 60', asset:'해외혼합', desc:'포트폴리오', grade:4, m3:5.46, m6:8.3}
+  ]},
+  top_purchase: { title:'매수 상위 펀드', brand:'미래에셋생명 · 판매 랭킹', date:'2026.07.15', unit:'판매순', top:[
+    {rank:1, nm:'MMF형', asset:'국내채권', desc:'단기채권', grade:6, m3:0.67, m6:1.31},
+    {rank:2, nm:'ETF글로벌AI테크', asset:'해외주식', desc:'글로벌', grade:2, m3:22.94, m6:35.06},
+    {rank:3, nm:'성장형', asset:'국내주식', desc:'일반', grade:3, m3:18.72, m6:47.72}
+  ]},
+  best_interest: { title:'베스트 관심 펀드', brand:'미래에셋생명 · 관심 랭킹', date:'2026.07.15', unit:'관심순', top:[
+    {rank:1, nm:'글로벌신성장액티브', asset:'해외주식', desc:'글로벌', grade:2, m3:27.25, m6:32.27},
+    {rank:2, nm:'글로벌 MVP 60', asset:'해외혼합', desc:'포트폴리오', grade:4, m3:5.39, m6:8.35},
+    {rank:3, nm:'주식형', asset:'국내주식', desc:'일반', grade:3, m3:27.19, m6:67.17}
+  ]}
+};
+function fmt(v){ return (v>=0?'+':'') + v.toFixed(2) + '%'; }
+function esc(s){ return String(s).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];}); }
+function render(cat){
+  var d = DATA[cat] || DATA.top_return;
+  var rows = d.top.map(function(x){
+    return '<div class="th-row'+(x.rank===1?' top1':'')+'">'
+      + '<div class="th-rank"><b>'+x.rank+'</b></div>'
+      + '<div class="th-info"><div class="th-nm">'+esc(x.nm)+'</div>'
+      +   '<div class="th-tags"><span class="th-tag">'+esc(x.asset)+'</span>'
+      +   '<span class="th-tag">'+esc(x.desc)+'</span>'
+      +   '<span class="th-risk g'+x.grade+'">'+x.grade+'등급</span></div></div>'
+      + '<div class="th-ret"><div class="th-big '+(x.m3>=0?'up':'down')+'">'+fmt(x.m3)+'</div>'
+      +   '<div class="th-sub">6개월 <b class="'+(x.m6>=0?'up':'down')+'">'+fmt(x.m6)+'</b></div></div>'
+      + '</div>';
+  }).join('');
+  document.getElementById('thumb').innerHTML =
+      '<div class="th-head"><div class="th-badge">TOP 3</div>'
+    + '<div class="th-brand">'+esc(d.brand)+'</div>'
+    + '<div class="th-title">'+esc(d.title)+'</div>'
+    + '<div class="th-date">기준일 '+d.date+'</div></div>'
+    + '<div class="th-list">'+rows+'</div>'
+    + '<div class="th-foot"><span class="more">전체보기 →</span></div>';
+}
+var cat = new URLSearchParams(location.search).get('cat') || 'top_return';
+render(cat);
+</script>
+</body>
+</html>

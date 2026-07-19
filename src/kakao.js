@@ -13,7 +13,7 @@ function buildCarousel(baseUrl, metaByCat) {
     const d = metaByCat[cfg.cat];
     const ver = d ? d.collected_date || d.base_date : '';
     return {
-      title: cfg.cardTitle,
+      // 제목은 섬네일 이미지 안에 이미 있어 중복 → 카드 title 은 생략
       description: '아래 버튼을 클릭하면 전체 펀드순위를 볼 수 있습니다.',
       // ?v=<수집일>-<배포ID>: 데이터 갱신(일 1회) 또는 새 배포 시 카카오 이미지 캐시 무효화
       thumbnail: {

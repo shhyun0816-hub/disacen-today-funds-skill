@@ -13,6 +13,10 @@
 각 카드는 **800×800 섬네일(TOP3)** + **[전체보기]** 버튼으로 구성되며,
 전체보기 클릭 시 해당 카테고리의 전체 랭킹 페이지(자산필터·정렬 지원)가 열립니다.
 
+> 📚 **상세 문서는 [docs/](./docs/README.md) 에 기능별·사용별로 정리되어 있습니다.**
+> [개요·아키텍처](./docs/01-overview.md) · [설치·환경변수](./docs/02-setup.md) · [엔드포인트](./docs/03-endpoints.md) ·
+> [오픈빌더 연동](./docs/guides/kakao-openbuilder.md) · [배포](./docs/guides/deploy.md) · [문제 해결](./docs/guides/troubleshooting.md)
+
 ---
 
 ## 1. 구성
